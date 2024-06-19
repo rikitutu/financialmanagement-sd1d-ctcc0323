@@ -574,21 +574,21 @@ public class PennyWise implements ActionListener, MouseListener {
             double currentValue = progbar.getValue();
             double newValue = currentValue - amount;
 
-            // Check if the goal is reached
-            if (GOAL > 0 && newValue <= GOAL) {
+            // Only update progress bar if goal is not reached
+            if (newValue >= 0) {
+                progbar.setValue((int) newValue);
+                updateProgressBarString();
+            } else {
+                progbar.setValue(0); // Ensure progress bar does not go negative
+                updateProgressBarString();
+            }
+
+            // Check if the expense exceed the goal
+            if (GOAL > 0 && newValue <= 0) {
                 JOptionPane.showMessageDialog(null, "You did not reach your goal, be wise and try again.", "You Failed!", JOptionPane.INFORMATION_MESSAGE, skeri);
                 GOAL = 0; // Reset the goal after reaching it
                 progbar.setValue((int) GOAL); // Set progress bar to goal value
                 updateProgressBarString(); // Update progress bar string after resetting goal
-            } else {
-                // Only update progress bar if goal is not reached
-                if (newValue >= 0) {
-                    progbar.setValue((int) newValue);
-                    updateProgressBarString();
-                } else {
-                    progbar.setValue(0); // Ensure progress bar does not go negative
-                    updateProgressBarString();
-                }
             }
 
             // Clear input fields
