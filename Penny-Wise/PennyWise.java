@@ -8,6 +8,11 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+/* 
+?    Penny Wise is a Java app that helps manage personal 
+?      finances by tracking income, expenses, and financial goals.
+*/
+
 // The PennyWise class implements ActionListener and MouseListener interfaces
 public class PennyWise implements ActionListener, MouseListener {
 
@@ -142,7 +147,7 @@ public class PennyWise implements ActionListener, MouseListener {
 
         // Message to display result of login
         MessRes = new JLabel();
-        MessRes.setBounds(160, 300, 230, 25);
+        MessRes.setBounds(180, 320, 230, 25);
         MessRes.setFont(FONT);
         mainPanel.add(MessRes);
 
@@ -338,8 +343,7 @@ public class PennyWise implements ActionListener, MouseListener {
     
     // Method to validate username and password
     private boolean UserPass(String user, String pass) {
-        return (user.equals("") && pass.equals("")) ||
-               (user.equals("riki") && pass.equals("123")) ||
+        return (user.equals("riki") && pass.equals("123")) ||
                (user.equals("asher") && pass.equals("456"));
     }
 
@@ -549,7 +553,7 @@ public class PennyWise implements ActionListener, MouseListener {
                 double userBalance = balance - amount;
 
             // Validate user balance and adjust if necessary
-            if (userBalance < 0 || (userBalance % 1 != 0 && userBalance < 1)) {
+            if (userBalance < 0 || (userBalance % 1 != userBalance && userBalance < 1)) {
                 userBalance = balance;
                 }
 
