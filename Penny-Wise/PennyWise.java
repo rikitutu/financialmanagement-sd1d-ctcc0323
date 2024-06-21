@@ -17,14 +17,14 @@ import javax.swing.table.DefaultTableModel;
 public class PennyWise implements ActionListener, MouseListener {
 
     // Declaring GUI components as static fields for easy access
-    private static JLabel pwtitle, userTitle, passTitle, MessRes, log, dateLabel, amountLabel, ammount;
+    private static JLabel pwtitle, userTitle, passTitle, MessRes, log, dateLabel, amountLabel, ammount, goalammount;
     private static JButton OkButton, goalbut;
     private static JPasswordField password;
     private static JTextField username, amountField, expenseField, dateField, expdateField, setgoal;
     private static JFrame frame;
     private static JTabbedPane tabbedPane;
     private static JProgressBar progbar;
-    private static JButton progbut, expprogbut;
+    private static JButton progbut, expprogbut, logbut;
     private static DefaultTableModel tableModel;
     private JTable historyTable;
     private SimpleDateFormat dateFormat;
@@ -62,7 +62,7 @@ public class PennyWise implements ActionListener, MouseListener {
     private static final Image resizewoah = memewoah.getImage().getScaledInstance(75, 55, Image.SCALE_SMOOTH);  // Adjust size as needed
     private static final ImageIcon woah = new ImageIcon(resizewoah);
 
-    private static final ImageIcon mainpanelbg = new ImageIcon("1.png");
+    private static final ImageIcon mainpanelbg = new ImageIcon("WELCOME USER (7).png");
     private static final Image mapabg = mainpanelbg.getImage();
 
     private static final ImageIcon panelbg = new ImageIcon("2.png");
@@ -186,17 +186,25 @@ public class PennyWise implements ActionListener, MouseListener {
 
         // Adding Balance
         ammount = new JLabel("0.00");
-        ammount.setFont(new Font("myFont", Font.PLAIN, 25));
-        ammount.setBounds(0, 147, 500, 100);
+        ammount.setFont(new Font("myFont", Font.PLAIN, 32));
+        ammount.setBounds(-17, 108, 550, 100);
         ammount.setHorizontalAlignment(JLabel.CENTER);
         ammount.setForeground(DARK_RED);
         mainPanel.add(ammount);
+
+        // Your current goal balance
+        goalammount = new JLabel();
+        goalammount.setFont(new Font("myFont", Font.PLAIN, 22));
+        goalammount.setBounds(-17, 231, 550, 100);
+        goalammount.setHorizontalAlignment(JLabel.CENTER);
+        goalammount.setForeground(DARK_RED);
+        mainPanel.add(goalammount);
 
         // Progress BaR
         GOAL = 0;
         progbar = new JProgressBar(0, (int)GOAL);
         progbar.setValue(0);
-        progbar.setBounds(110, 258, 280, 25);
+        progbar.setBounds(110, 214, 290, 37);
         progbar.setForeground(DARK_RED);
         progbar.setOpaque(false);
         progbar.setBorder(border);
@@ -206,7 +214,7 @@ public class PennyWise implements ActionListener, MouseListener {
 
         // Set Goal Button
         goalbut = new JButton("Set Goal");
-        goalbut.setBounds(205, 347, 90, 20);
+        goalbut.setBounds(205, 357, 90, 20);
         goalbut.setBackground(Color.red);
         goalbut.setForeground(Color.white);
         goalbut.setOpaque(true);
@@ -216,12 +224,22 @@ public class PennyWise implements ActionListener, MouseListener {
 
         // Set Goal
         setgoal = new JTextField();
-        setgoal.setBounds(130, 312, 240,30);
+        setgoal.setBounds(130, 322, 240,30);
         setgoal.setOpaque(false);
         setgoal.setFont(FONT);
         setgoal.setBorder(underlineBorder);
         setgoal.setHorizontalAlignment(JTextField.CENTER);
         mainPanel.add(setgoal);
+
+        // Log out
+        logbut = new JButton("Log Out");
+        logbut.setBounds(212, 557, 80, 15);
+        logbut.setBackground(Color.red);
+        logbut.setForeground(Color.white);
+        logbut.setOpaque(true);
+        logbut.addActionListener(this);
+        logbut.addMouseListener(this);
+        mainPanel.add(logbut);
 
         // Add Income Panel -----------------------------------
         PanelBG addIncPanel = new PanelBG();
@@ -253,6 +271,8 @@ public class PennyWise implements ActionListener, MouseListener {
         dateField.setText(dateFormat.format(new Date()));
         dateField.setFont(FONT);
         dateField.setBounds(180, 150, 245, 28);
+        dateField.setEditable(false);
+        dateField.setBackground(Color.white);
         dateField.setBorder(border);
         addIncPanel.add(dateField);
 
@@ -296,6 +316,8 @@ public class PennyWise implements ActionListener, MouseListener {
         expdateField.setText(dateFormat.format(new Date()));
         expdateField.setFont(FONT);
         expdateField.setBounds(180, 150, 245, 28);
+        expdateField.setEditable(false);
+        expdateField.setBackground(Color.white);
         expdateField.setBorder(border);
         addExpPanel.add(expdateField);
 
@@ -344,6 +366,7 @@ public class PennyWise implements ActionListener, MouseListener {
     // Method to validate username and password
     private boolean UserPass(String user, String pass) {
         return (user.equals("riki") && pass.equals("123")) ||
+               (user.equals("") && pass.equals("")) ||
                (user.equals("asher") && pass.equals("456"));
     }
 
@@ -377,7 +400,8 @@ public class PennyWise implements ActionListener, MouseListener {
     // Method to update the progress bar string -----------------------------------------------------
     private void updateProgressBarString() {
         int currentValue = progbar.getValue();
-        progbar.setString(String.format("%d / %d", currentValue, (int)GOAL));
+
+        goalammount.setText(String.format("%d / %d", currentValue, (int)GOAL));
     }
 
     // Bar Graph ------------------------------------------------------------------------------------
@@ -623,6 +647,9 @@ public class PennyWise implements ActionListener, MouseListener {
             } else {
                 JOptionPane.showMessageDialog(editPanel, "Please enter a goal amount.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             }
+        } else if (e.getSource() == logbut) {
+            editshow(false);
+            showmain(true);
         }
     }      
 
